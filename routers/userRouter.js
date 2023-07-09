@@ -42,13 +42,14 @@ userRouter.post("/login", async (req, res) => {
 			expiresIn: "7d",
 		});
 
-		res
-			.setHeader(
-				"Set-Cookie",
-				`token=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${
-					7 * 24 * 60 * 60
-				}`
-			)
+		res.
+			cookie("token", token, {
+				httpOnly: true,
+				sameSite: "none",
+				secure: true,
+				path: "/",
+				maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+			})
 			.status(200)
 			.json({
 				success: true,
@@ -108,7 +109,11 @@ userRouter.post("/signup", async (req, res) => {
 
 // logout route that unsets cookie
 userRouter.post("/logout", async (_, res) => {
-	return res.clearCookie("token").status(200).json({
+	return res.clearCookie("token", {
+		httpOnly: true,
+		path: "/",
+
+	}).status(200).json({
 		success: true,
 		message: "User logged out!"
 	})
