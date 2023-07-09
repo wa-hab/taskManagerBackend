@@ -17,7 +17,7 @@ app.use(cors(corsOption));
 app.use("/api/user", userRouter);
 app.use("/api/task", checkCookieValid, tasksRouter);
 
-app.get("/", (req, res) => {
+app.get("/api/", (req, res) => {
 	res.send("Hello World");
 });
 
