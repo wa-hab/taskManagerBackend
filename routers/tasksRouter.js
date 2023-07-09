@@ -37,6 +37,36 @@ tasksRouter.get("/", async (req, res) => {
 	}
 });
 
+tasksRouter.post("/complete", async (req, res) => {
+	const { taskId } = req.body;
+
+	try {
+		const task = await prisma.task.update({
+			where: {
+				id: taskId,
+			},
+			data: {
+				done: true,
+			},
+		});
+
+		return res.status(200).json({
+			success: true,
+			message: "Task updated successfully! 🎉",
+			data: {
+				task,
+			},
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			success: false,
+			message: "Failed to update task 😥",
+			data: null,
+		});
+	}
+});
+
 // create new task
 tasksRouter.post("/create", async (req, res) => {
 	const { id } = req.user;

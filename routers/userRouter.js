@@ -8,12 +8,10 @@ userRouter.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 
 	if (!username || !password) {
-		return res
-			.status(400)
-			.json({
-				success: false,
-				message: "Please provide username and password",
-			});
+		return res.status(400).json({
+			success: false,
+			message: "Please provide username and password",
+		});
 	}
 
 	// check if the username exists, if it doesn't, return error
@@ -47,7 +45,9 @@ userRouter.post("/login", async (req, res) => {
 		res
 			.setHeader(
 				"Set-Cookie",
-				`token=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${7 * 24 * 60 * 60}`
+				`token=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${
+					7 * 24 * 60 * 60
+				}`
 			)
 			.status(200)
 			.json({
@@ -72,12 +72,10 @@ userRouter.post("/signup", async (req, res) => {
 	const { username, password } = req.body;
 
 	if (!username || !password) {
-		return res
-			.status(400)
-			.json({
-				success: false,
-				message: "Please provide username and password",
-			});
+		return res.status(400).json({
+			success: false,
+			message: "Please provide username and password",
+		});
 	}
 
 	// check if the username is taken, if it is, return error
@@ -106,6 +104,14 @@ userRouter.post("/signup", async (req, res) => {
 		console.log(error);
 		res.status(400).json({ success: false, message: "Error creating user" });
 	}
+});
+
+// logout route that unsets cookie
+userRouter.post("/logout", async (_, res) => {
+	return res.clearCookie("token").status(200).json({
+		success: true,
+		message: "User logged out!"
+	})
 });
 
 module.exports = userRouter;
