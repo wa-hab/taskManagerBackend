@@ -1,0 +1,24 @@
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const userRouter = require("./routers/userRouter");
+const tasksRouter = require("./routers/tasksRouter");
+const checkCookieValid = require("./middleware/checkCookieValid");
+
+const app = express();
+app.use(express.json());
+app.use(cookieParser());
+let corsOption = {
+	origin: "http://localhost:5173", //origin from where you requesting
+	credentials: true,
+};
+app.use(cors(corsOption));
+
+app.use("/api/user", userRouter);
+app.use("/api/task", checkCookieValid, tasksRouter);
+
+app.get("/", (req, res) => {
+	res.send("Hello World");
+});
+
+app.listen(3000);
