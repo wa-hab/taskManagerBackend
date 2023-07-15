@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 let corsOption = {
-	origin: "*",
+	origin: "*.vercel.app",
 	credentials: true,
 };
 app.use(cors(corsOption));
